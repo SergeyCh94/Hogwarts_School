@@ -19,7 +19,7 @@ public class HouseController {
         this.houseService = houseService;
     }
 
-    @GetMapping("/faculty/{id}")
+    @GetMapping("/{id}")
     public Faculty getFacultyById(@PathVariable Long id){
         return houseService.findFaculty(id);
     }
@@ -29,18 +29,18 @@ public class HouseController {
         return houseService.facultyCreate(faculty);
     }
 
-    @PutMapping("/faculty")
+    @PutMapping("/")
     public Faculty updateFaculty(@RequestBody Faculty faculty){
         return houseService.editFaculty(faculty);
     }
 
-    @DeleteMapping("/faculty/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteFaculty(@PathVariable Long id){
         houseService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/faculty")
+    @GetMapping("/")
     public List<Faculty> getFacultiesByColor(@RequestParam String color) {
         return houseService.getFacultiesByColor(color);
     }

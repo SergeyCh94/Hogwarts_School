@@ -18,7 +18,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/{id}")
     public Student getStudentById(@PathVariable Long id){
         return studentService.findStudent(id);
     }
@@ -28,19 +28,19 @@ public class StudentController {
         return studentService.studentCreate(student);
     }
 
-    @PutMapping("/student")
+    @PutMapping("/")
     public Student updateStudent(@RequestBody Student student){
         return studentService.editStudent(student);
     }
 
-    @DeleteMapping("/student/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteStudent(@PathVariable Long id){
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/student")
-    public List<Student> getStudentsByAge(@RequestParam int age) {
+    @GetMapping("/")
+    public List<Student> getStudentsByAge(@RequestParam Integer age) {
         return studentService.getStudentsByAge(age);
     }
 }
