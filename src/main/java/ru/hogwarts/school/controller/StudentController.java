@@ -1,12 +1,13 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.service.StudentService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,16 +30,17 @@ public class StudentController {
     }
 
     @PostMapping
-    public StudentDTO createStudent(@RequestBody StudentDTO studentDTO) {
-        if (studentDTO == null) {
-            throw new IllegalArgumentException("Student must not be null");
-        }
-        return studentService.studentCreate(studentDTO);
+    public ResponseEntity<StudentDTO> createStudent(@Valid @RequestBody StudentDTO studentDTO, UriComponentsBuilder uriBuilder) {
+        StudentDTO createdStudent = studentService.studentCreate(studentDTO);
+        return ResponseEntity
+                .created(uriBuilder.path("/student/{id}").buildAndExpand(createdStudent.getId()).toUri())
+                .body(createdStudent);
     }
 
     @PutMapping("/{id}")
-    public StudentDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
-        return studentService.editStudent(id, studentDTO);
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
+        StudentDTO updatedStudent = studentService.editStudent(id, studentDTO);
+        return ResponseEntity.ok(updatedStudent);
     }
 
     @DeleteMapping("/{id}")
@@ -48,20 +50,21 @@ public class StudentController {
     }
 
     @GetMapping()
-    public List<StudentDTO> getStudentsByAge(@RequestParam Integer age) {
+    public List<StudentDTO> getStudentsByAge(@RequestParam(required = true) Integer age) {
         return studentService.getStudentsByAge(age);
     }
 
     @GetMapping("/age")
-    public List<StudentDTO> findByAgeBetween(@RequestParam Integer minAge, Integer maxAge) {
-        if (minAge == null || maxAge == null) {
-            throw new IllegalArgumentException("minAge and maxAge must not be null");
-        }
+    public List<StudentDTO> findByAgeBetween(@RequestParam(required = true) Integer minAge, @RequestParam(required = true) Integer maxAge) {
         return studentService.findByAgeBetween(minAge, maxAge);
     }
 
     @GetMapping("/{id}/faculty")
-    public FacultyDTO getStudentFaculty(@PathVariable Long id) {
-        return studentService.getStudentFaculty(id);
+    public ResponseEntity<FacultyDTO> getStudentFaculty(@PathVariable Long id) {
+        FacultyDTO facultyDTO = studentService.getStudentFaculty(id);
+        if (facultyDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(facultyDTO);
     }
 }

@@ -8,8 +8,16 @@ public class StudentDTO {
     private int age;
     private Long facultyId;
 
-    public StudentDTO(Student student) {
+    public StudentDTO() {
+    }
 
+    public StudentDTO(Student student) {
+        this.id = student.getId();
+        this.name = student.getName();
+        this.age = student.getAge();
+        if (student.getFaculty() != null) {
+            this.facultyId = student.getFaculty().getId();
+        }
     }
 
     public Long getId() {

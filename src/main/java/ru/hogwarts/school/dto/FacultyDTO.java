@@ -4,6 +4,7 @@ import ru.hogwarts.school.model.Faculty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FacultyDTO {
     private Long id;
@@ -17,8 +18,11 @@ public class FacultyDTO {
     }
 
     public FacultyDTO(Faculty faculty) {
-
+        this.id = faculty.getId();
+        this.name = faculty.getName();
+        this.students = faculty.getStudents().stream().map(StudentDTO::new).collect(Collectors.toList());
     }
+
 
     public Long getId() {
         return id;
