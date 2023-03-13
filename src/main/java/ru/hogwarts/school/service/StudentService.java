@@ -105,4 +105,9 @@ public class StudentService {
         List<Student> students = faculty.getStudents();
         return students.stream().map(StudentDTO::new).collect(Collectors.toList());
     }
+
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow();
+    }
 }

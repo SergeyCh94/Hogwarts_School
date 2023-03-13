@@ -3,7 +3,7 @@ package ru.hogwarts.school.model;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "students")
+@Table(name = "students")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +20,19 @@ public class Student {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
-    public Student(Long id, String name, int age, Faculty faculty) {
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
+
+    public Student(String name, int age, Faculty faculty) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.faculty = faculty;
+        this.avatar = avatar;
     }
 
-    public Student(String name, int age, Faculty faculty) {
+    public Student(Student student) {
 
     }
 
@@ -65,5 +70,13 @@ public class Student {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 }
