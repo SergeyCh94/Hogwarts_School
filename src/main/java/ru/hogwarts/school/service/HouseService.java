@@ -3,13 +3,9 @@ package ru.hogwarts.school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class HouseService {
@@ -34,5 +30,13 @@ public class HouseService {
 
     public List<Faculty> getFacultiesByColor(String color) {
         return facultyRepository.findByColor(color);
+    }
+
+    public List<Faculty> getAllFaculties() {
+        return facultyRepository.findAll();
+    }
+
+    public List<Faculty> findByNameIgnoreCase(String name) {
+        return facultyRepository.findByNameIgnoreCase(name);
     }
 }
